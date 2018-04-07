@@ -2,6 +2,7 @@
 const express = require('express');  
 const path = require('path');  
 const app = express();
+const PORT = process.env.PORT || 5000
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  
@@ -16,4 +17,4 @@ app.get('/api/v1/login', function(req, res) {
 
 app.use('/', express.static('ui-app/dist'));
 
-app.listen(80, () => console.log('Example app listening on port 80!'))
+app.listen(PORT, () => console.log('Example app listening on port ${PORT}!'))
