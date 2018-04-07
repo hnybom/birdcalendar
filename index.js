@@ -16,4 +16,4 @@ app.get('/api/v1/login', function(req, res) {
 
 app.use('/', express.static('ui-app/dist'));
 
-module.exports = app;  
+app.listen(80, () => console.log('Example app listening on port 80!'))
