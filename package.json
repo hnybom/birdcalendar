@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js", 
-    "postinstall": "cd ui-app && yarn && yarn build"
+    "heroku-postbuild": "cd ui-app && yarn && yarn build"
   },
   "author": "",
   "license": "ISC",
