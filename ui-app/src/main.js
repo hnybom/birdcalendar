@@ -1,30 +1,45 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import firebase from 'firebase/app';
-import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css';
+import firebase from 'firebase';
 import Vue from 'vue';
-import App from './App';
+import App from './App.vue';
 import router from './router';
+import store from './store';
+import './registerServiceWorker';
 
-Vue.use(Vuetify);
+import { config } from './firebaseConfig';
+
+
+import './assets/app.scss'
+import './assets/mapbox-gl.css'
+import 'spectre.css/dist/spectre.min.css'
+import 'spectre.css/dist/spectre-exp.min.css'
+import 'spectre.css/dist/spectre-icons.min.css'
+import Autocomplete from 'v-autocomplete'
+import VueMapbox from 'vue-mapbox'
+import Mapbox from 'mapbox-gl'
+
 
 Vue.config.productionTip = false;
 
-const config = {
-  apiKey: 'AIzaSyBkmjAJ5I_s1tbPYibXy2cc7TOvjdL1aGw',
-  authDomain: 'birdcalendar-hn.firebaseapp.com',
-  databaseURL: 'https://birdcalendar-hn.firebaseio.com',
-  projectId: 'birdcalendar-hn',
-  storageBucket: 'birdcalendar-hn.appspot.com',
-  messagingSenderId: '603078411546',
-};
-firebase.initializeApp(config);
+Vue.use(VueMapbox, { mapboxgl: Mapbox }, Autocomplete)
+const app = firebase.initializeApp(config);
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
-  components: { App },
-  template: '<App/>',
-});
+  created() {
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        store.commit('login')
+        this.$router.push('/userhome')
+      } else {
+        this.$router.push('/')
+      }
+    });
+  },
+  store,
+  render: h => h(App),
+}).$mount('#app');
+
+const db = firebase.firestore(app)
+
+export default db
